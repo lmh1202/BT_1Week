@@ -1,18 +1,16 @@
-import { Button, Container, Drawer, Group, Title } from '@mantine/core';
-import { useState } from 'react';
-import BaiLam1 from './bailam1/BaiLam1';
-import DeBai1 from './DeBai1';
+import { Button, Container, Drawer, Group, Title } from "@mantine/core";
+import { useState } from "react";
+import BaiLam1 from "./bailam1/BaiLam1";
+import DeBai1 from "./DeBai1";
 
 export default function Exercise1() {
   const [opened, setOpened] = useState(false);
 
   return (
     <>
-      <Group position='apart'>
+      <Group position="apart">
         <Title order={1}>Exercise 1: Simple React Component</Title>
-        <Button onClick={() => setOpened(true)}>
-          Đề bài
-        </Button>
+        <Button onClick={() => setOpened(true)}>Đề bài</Button>
       </Group>
 
       <Container py="lg" px={0}>
@@ -29,7 +27,6 @@ export default function Exercise1() {
       >
         <DeBai1 />
       </Drawer>
-
     </>
   );
 }
