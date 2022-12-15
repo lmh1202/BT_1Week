@@ -8,6 +8,7 @@ import {
   IconArticle,
   IconListSearch,
   IconSitemap,
+  IconTornado,
 } from "@tabler/icons";
 import { ThemeIcon, UnstyledButton, Group, Text } from "@mantine/core";
 import { Link } from "react-router-dom";
@@ -67,6 +68,12 @@ const data = [
     label: "C1: Todo App State",
     link: "/exercise/c1",
   },
+  {
+    icon: <IconTornado size={16} />,
+    color: "blue",
+    label: "C2: Todo App Zustand",
+    link: "/exercise/c2"
+  }
 ];
 
 interface MainLinkProps {

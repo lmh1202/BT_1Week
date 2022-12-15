@@ -8,6 +8,7 @@ import Exercise3 from "../exercise3/Exercise3";
 import Exercise4 from "../exercise4/Exercise4";
 import Exercise5 from "../exercise5/Exercise5";
 import ExerciseC1 from "../exercise-c1/ExerciseC1";
+import ExerciseC2 from "../exercise-c2/ExerciseC2";
 function Main() {
   return (
     <>
@@ -21,6 +22,7 @@ function Main() {
         <Route path="/exercise/b1" element={<ExerciseB1 />} />
         <Route path="/exercise/b2" element={<ExerciseB2 />} />
         <Route path="/exercise/c1" element={<ExerciseC1 />} />
+        <Route path="/exercise/c2" element={<ExerciseC2 />} />
         <Route path="*" element={<Navigate to="/about" />} />
       </Routes>
     </>
