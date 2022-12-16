@@ -1,14 +1,20 @@
 import { ActionIcon, Box, Button, Card, Checkbox, Input, Menu, Stack, Tabs, Group, Center, Aside } from "@mantine/core";
 import { IconCheck, IconDots, IconSearch, IconTrash } from "@tabler/icons";
+import { KeyboardEvent, useState } from "react";
 import { useStore } from "./data/store.zustand";
 
 export default function BaiLamC2() {
   const todoList = useStore((state) => state.todos);
   const todoListStore = useStore();
+  const [text, setText] = useState("");
   const submit = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
-      todoListStore.addTodo();
+      todoListStore.addTodo(text);
+      setText(" ");
     }
+  };
+  const checkbox = (index: number) => {
+    console.log(index);
   };
   console.log(todoList);
   return (
@@ -20,9 +26,9 @@ export default function BaiLamC2() {
             <Input
               icon={<IconSearch />}
               placeholder="Add new todo"
-              value={todoListStore.newTodo}
-              onChange={(event) => todoListStore.setNewTodo(event.target.value)}
-              onKeyDown={(e) => submit(e)}
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              onKeyPress={(event: KeyboardEvent) => submit(event)}
             />
           </Input.Wrapper>
           {/* Tab Filter */}
@@ -33,11 +39,11 @@ export default function BaiLamC2() {
               <Tabs.Tab value="completed">Completed</Tabs.Tab>
             </Tabs.List>
           </Tabs>
-          {todoList.map(todos => (
+          {todoList.map((todos, index) => (
             <>
               <Box my={10}>
                 <Group position='apart'>
-                  <Checkbox label={todos.name} />
+                  <Checkbox label={todos.name} onChange={() => (todoListStore.updateStatus(todos.uuid))} />
                   <Menu position="left">
                     <Menu.Target>
                       <ActionIcon>
@@ -45,7 +51,7 @@ export default function BaiLamC2() {
                       </ActionIcon>
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Item icon={<IconTrash />}>Delete</Menu.Item>
+                      <Menu.Item icon={<IconTrash />} onClick={() => { todoListStore.deleteTodo(index); }}>Delete</Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
                 </Group>

@@ -1,43 +1,45 @@
 import create from "zustand";
 import { v4 as uuidv4 } from "uuid";
 
-
 interface todosZustand {
   uuid: string,
   name: string,
-  stutus: 'pending' | 'completed';
+  status: 'pending' | 'completed';
 };
 
 type storeZustand = {
   todos: todosZustand[];
-  newTodo: string,
-  addTodo: () => void;
-  setNewTodo: (text: string) => void;
+  addTodo: (text: string) => void;
+  updateStatus: (uuid: string) => void;
+  deleteTodo: (index: number) => void;
 };
+
 export const useStore = create<storeZustand>()((set) => ({
   todos: [
     {
       uuid: '1',
       name: 'Giat do',
-      stutus: 'pending'
+      status: 'pending'
     },
     {
       uuid: '2',
       name: 'Nau com',
-      stutus: 'pending'
+      status: 'pending'
     }
   ],
-  newTodo: '',
-  addTodo: () =>
-    set((state) => ({
-      todos: [...state.todos, { uuid: uuidv4(), name: state.newTodo, stutus: 'pending' }],
-      newTodo: "",
-    })),
-  setNewTodo: (newTodo: string) =>
-    set((state) => ({
-      ...state,
-      newTodo,
-    })),
+  addTodo: (text: string) => set((state) => ({
+    todos: [...state.todos, { uuid: uuidv4(), name: text, status: 'pending' }],
+  })),
+  updateStatus: (uuid: string) => set((state) => ({
+    todos: state.todos.map((todo) => {
+      return { ...todo, status: todo.uuid === uuid ? (todo.status === 'pending' ? 'completed' : 'pending') : todo.status };
+    })
+  })),
+  deleteTodo: (index: number) => set((state) => ({
+    todos: state.todos.filter((todo) => {
+      return todo.uuid !== state.todos[index].uuid;
+    })
+  }))
 }));
 
 
