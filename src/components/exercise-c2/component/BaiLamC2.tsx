@@ -1,22 +1,32 @@
 import { ActionIcon, Box, Button, Card, Checkbox, Input, Menu, Stack, Tabs, Group, Center, Aside } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { IconCheck, IconDots, IconSearch, IconTrash } from "@tabler/icons";
 import { KeyboardEvent, useState } from "react";
-import { useStore } from "./data/store.zustand";
+import { todosZustand, useStore } from "./data/store.zustand";
 
 export default function BaiLamC2() {
   const todoList = useStore((state) => state.todos);
+  const [local, setLocal] = useLocalStorage({ key: 'todoListC2', defaultValue: todoList });
   const todoListStore = useStore();
   const [text, setText] = useState("");
   const submit = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       todoListStore.addTodo(text);
-      setText(" ");
+      setText("");
     }
   };
-  const checkbox = (index: number) => {
-    console.log(index);
+  const handleChangeFilter = (filter: string) => {
+    todoListStore.changeFilter(filter);
+    console.log(todoListStore.filter);
   };
-  console.log(todoList);
+  const handleSave = () => {
+    setLocal(todoList);
+    console.log(local, typeof (local));
+
+  };
+  const renderFilter = todoList.filter(todo => (todoListStore.filter === 'all' || todo.status === todoListStore.filter)
+  );
+
   return (
     <>
       <Card mt={30}>
@@ -34,12 +44,12 @@ export default function BaiLamC2() {
           {/* Tab Filter */}
           <Tabs>
             <Tabs.List grow>
-              <Tabs.Tab value="all">All</Tabs.Tab>
-              <Tabs.Tab value="pending">Pending</Tabs.Tab>
-              <Tabs.Tab value="completed">Completed</Tabs.Tab>
+              <Tabs.Tab value="all" onClick={() => handleChangeFilter('all')}>All</Tabs.Tab>
+              <Tabs.Tab value="pending" onClick={() => handleChangeFilter('pending')}>Pending</Tabs.Tab>
+              <Tabs.Tab value="completed" onClick={() => handleChangeFilter('completed')}>Completed</Tabs.Tab>
             </Tabs.List>
           </Tabs>
-          {todoList.map((todos, index) => (
+          {renderFilter.map((todos, index) => (
             <>
               <Box my={10}>
                 <Group position='apart'>
@@ -60,7 +70,7 @@ export default function BaiLamC2() {
           ))}
           {/* Button sava Local Storage */}
           <Center>
-            <Button leftIcon={<IconCheck />}>Save</Button>
+            <Button leftIcon={<IconCheck />} onClick={() => handleSave()}>Save</Button>
           </Center>
         </Stack>
       </Card>

@@ -1,7 +1,9 @@
 import create from "zustand";
 import { v4 as uuidv4 } from "uuid";
+import { useLocalStorage } from "@mantine/hooks";
+import zustand from "zustand";
 
-interface todosZustand {
+export interface todosZustand {
   uuid: string,
   name: string,
   status: 'pending' | 'completed';
@@ -12,6 +14,9 @@ type storeZustand = {
   addTodo: (text: string) => void;
   updateStatus: (uuid: string) => void;
   deleteTodo: (index: number) => void;
+  filter: string;
+  changeFilter: (filter: string) => void;
+  saveLocal: (todo: todosZustand[]) => void;
 };
 
 export const useStore = create<storeZustand>()((set) => ({
@@ -39,7 +44,15 @@ export const useStore = create<storeZustand>()((set) => ({
     todos: state.todos.filter((todo) => {
       return todo.uuid !== state.todos[index].uuid;
     })
+  })),
+  filter: 'all',
+  changeFilter: (filter: string) => set((state) => ({
+    filter: state.filter = filter,
+  })),
+  saveLocal: (todo: todosZustand[]) => set((state) => ({
+
   }))
 }));
+
 
 
